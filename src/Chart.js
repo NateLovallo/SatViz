@@ -20,6 +20,12 @@ function Chart() {
     console.log(JSON.stringify(routes, null, 2));
 
     const option = {
+        title: {
+          text: 'Oneweb satellites'
+        },
+        tooltip: {
+            show: true
+        },
         backgroundColor: '#000',
         globe: {
           baseTexture: basetexture,
@@ -39,6 +45,7 @@ function Chart() {
           }
         },
         series: {
+          name: "oneweb",
           type: 'scatter3D',
           coordinateSystem: 'globe',
           symbol: 'circle',
