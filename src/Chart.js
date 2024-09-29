@@ -8,18 +8,58 @@ import basetexture from './world.topo.bathy.200401.jpg'
 import htex from './bathymetry_bw_composite_4k.jpg'
 import starfield from './starfield.jpg'
 
-function Chart() {
+class Chart extends React.Component {
+    render () {
+      return <ReactEcharts
+        option={this.getOption()} 
+        onEvents={this.onEvents} 
+        ref={(e) => { this.echartRef = e; }}
+        style={{height: '800px', width: '100%'}} />;
+    }
 
-    var routes = [
-        [ -112.0391, 46.5891  ],
-        [ -111.0373 ,  45.679 ],
-        [ -122.3328,  47.6061 ],
-        [ -84.3885, 33.7501 ]
-    ];
+    onChartClick = (params) => {
+      console.log('Chart clicked', params['name']);
+    };
 
-    console.log(JSON.stringify(routes, null, 2));
+    onEvents = {
+      click: this.onChartClick,
+    };
 
-    const option = {
+   /* 
+    useEffect = () => {
+      console.log('hello world')
+      axios.get('http://localhost:5000/oneweb_sats')
+        .then(function (response) {
+          // handle success
+          console.log(response);
+          const echartInstance = this.echartRef.getEchartsInstance();
+
+          let new_option = this.getOption()
+          new_option['series'] = {
+            name: "oneweb",
+          type: 'scatter3D',
+          coordinateSystem: 'globe',
+          symbol: 'circle',
+          symbolSize: 10,
+          data: data
+          }
+
+          console.log(new_option);
+          echartInstance.setOption(new_option)
+
+        })
+        .catch(function (error) {
+          // handle error
+          console.log(error);
+        })
+        .finally(function () {
+          // always executed
+        });
+    };*/
+
+    getOption = () => {
+      let options = {
+      responsive: true,
         title: {
           text: 'Oneweb satellites'
         },
@@ -28,6 +68,8 @@ function Chart() {
         },
         backgroundColor: '#000',
         globe: {
+          //width: 1000,
+         // height: 1000,
           baseTexture: basetexture,
           heightTexture: htex,
           shading: 'realistic',
@@ -52,10 +94,11 @@ function Chart() {
           symbolSize: 10,
           data: data
         }
-    };
+      };
 
-
-    return <ReactEcharts option={option} />;
-  }
+      return options;
+    }
+  
+  };
   
   export default Chart;
