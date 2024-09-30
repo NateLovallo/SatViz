@@ -55,6 +55,7 @@ function Chart() {
             show: true
         },
         backgroundColor: '#000',
+        animation: true,
         globe: {
           //width: 1000,
          // height: 1000,
