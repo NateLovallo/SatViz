@@ -1,64 +1,52 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import 'echarts-gl'
 import ReactEcharts from "echarts-for-react"; 
 import axios from 'axios';
-
-import data from './sats.json'
 import basetexture from './world.topo.bathy.200401.jpg'
 import htex from './bathymetry_bw_composite_4k.jpg'
 import starfield from './starfield.jpg'
 
-class Chart extends React.Component {
-    render () {
-      return <ReactEcharts
-        option={this.getOption()} 
-        onEvents={this.onEvents} 
-        ref={(e) => { this.echartRef = e; }}
-        style={{height: '800px', width: '100%'}} />;
-    }
+const satApi = 'http://localhost:5000/oneweb_sats';
 
-    onChartClick = (params) => {
+function Chart() {
+
+    const onChartClick = (params) => {
       console.log('Chart clicked', params['name']);
     };
 
-    onEvents = {
-      click: this.onChartClick,
+    const onEvents = {
+      click: onChartClick,
     };
 
-   /* 
-    useEffect = () => {
-      console.log('hello world')
-      axios.get('http://localhost:5000/oneweb_sats')
-        .then(function (response) {
-          // handle success
-          console.log(response);
-          const echartInstance = this.echartRef.getEchartsInstance();
+    const eChartsRef = useRef(null);
 
-          let new_option = this.getOption()
-          new_option['series'] = {
-            name: "oneweb",
+    const apiCall = async () => {
+      axios.get(satApi)
+        .then(resp => {      
+         //console.log(resp)
+          let opts = options;
+         opts['series'] = {
+          name: "oneweb",
           type: 'scatter3D',
           coordinateSystem: 'globe',
           symbol: 'circle',
-          symbolSize: 10,
-          data: data
-          }
-
-          console.log(new_option);
-          echartInstance.setOption(new_option)
-
+          symbolSize: 10, 
+            data: resp.data
+         } 
+         if (eChartsRef && eChartsRef.current) {
+          console.log(opts)
+          var chart = eChartsRef.current?.getEchartsInstance()//setOption(opts);
+          chart.setOption(opts)
+         }
+         console.log('chartRef inst: ' + eChartsRef.current)//.getEchartsInstance())
         })
-        .catch(function (error) {
-          // handle error
-          console.log(error);
-        })
-        .finally(function () {
-          // always executed
-        });
-    };*/
+    }
 
-    getOption = () => {
-      let options = {
+    apiCall()
+    
+    setInterval(() => apiCall(), 10000)
+
+    const options = {
       responsive: true,
         title: {
           text: 'Oneweb satellites'
@@ -85,7 +73,7 @@ class Chart extends React.Component {
           viewControl: {
             autoRotate: false
           }
-        },
+        }/*,
         series: {
           name: "oneweb",
           type: 'scatter3D',
@@ -93,11 +81,14 @@ class Chart extends React.Component {
           symbol: 'circle',
           symbolSize: 10,
           data: data
-        }
+        }*/
       };
 
-      return options;
-    }
+    return <ReactEcharts
+        option={options} 
+        onEvents={onEvents} 
+        ref={eChartsRef}
+        style={{height: '800px', width: '100%'}} />;
   
   };
   
