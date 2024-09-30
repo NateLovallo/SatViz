@@ -34,12 +34,12 @@ def login():
 
     for satellite in satellites:
         geocentric = satellite.at(t)
-        print(geocentric.position.km)
+        #print(geocentric.position.km)
         lat, lon = wgs84.latlon_of(geocentric)
 
         sat = {
         'name' : satellite.name,
-        'value' : [math.degrees(lat.radians), math.degrees(lon.radians)]
+        'value' : [ math.degrees(lon.radians), math.degrees(lat.radians)]
         }
 
         data.append(sat)

@@ -35,16 +35,16 @@ function Chart() {
          } 
          if (eChartsRef && eChartsRef.current) {
           console.log(opts)
-          var chart = eChartsRef.current?.getEchartsInstance()//setOption(opts);
+          var chart = eChartsRef.current?.getEchartsInstance()
           chart.setOption(opts)
          }
-         console.log('chartRef inst: ' + eChartsRef.current)//.getEchartsInstance())
+         console.log('chartRef inst: ' + eChartsRef.current)
         })
     }
 
     apiCall()
     
-    setInterval(() => apiCall(), 10000)
+    setInterval(() => apiCall(), 5000)
 
     const options = {
       responsive: true,
