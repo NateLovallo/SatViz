@@ -57,8 +57,6 @@ function Chart() {
         backgroundColor: '#000',
         animation: true,
         globe: {
-          //width: 1000,
-         // height: 1000,
           baseTexture: basetexture,
           heightTexture: htex,
           shading: 'realistic',
@@ -74,15 +72,7 @@ function Chart() {
           viewControl: {
             autoRotate: false
           }
-        }/*,
-        series: {
-          name: "oneweb",
-          type: 'scatter3D',
-          coordinateSystem: 'globe',
-          symbol: 'circle',
-          symbolSize: 10,
-          data: data
-        }*/
+        }
       };
 
     return <ReactEcharts
